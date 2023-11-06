@@ -4,16 +4,16 @@ import "context"
 
 type Room struct{}
 
-var availableRooms = map[string]struct{}{"econom": {}, "standart": {}, "lux": {}}
+var rooms = map[string]struct{}{"econom": {}, "standart": {}, "lux": {}}
 
 func New() *Room {
 	return &Room{}
 }
 
-func (r Room) GetAvailable(ctx context.Context) (map[string]struct{}, error) {
-	res := make(map[string]struct{}, len(availableRooms))
+func (r Room) GetAll(ctx context.Context) (map[string]struct{}, error) {
+	res := make(map[string]struct{}, len(rooms))
 
-	for room := range availableRooms {
+	for room := range rooms {
 		res[room] = struct{}{}
 	}
 

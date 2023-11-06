@@ -10,13 +10,15 @@ func (h *Hotel) GetOrdersByEmail(w http.ResponseWriter, r *http.Request) {
 
 	orders, err := h.usecase.GetOrdersByEmail(r.Context(), email)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logAndReturnErr("failed to get orders by email", err, w)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(orders); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logAndReturnErr("failed to endcode to json", err, w)
 		return
 	}
+
+	return
 }

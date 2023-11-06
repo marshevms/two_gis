@@ -21,7 +21,7 @@ func New() *Hotel {
 func (h *Hotel) MakeOrder(ctx context.Context, order model.Order) error {
 	rooms, err := h.room.GetAvailable(ctx)
 	if err != nil {
-		return err
+		return toUsescaseError(err)
 	}
 
 	if _, ok := rooms[order.Room]; !ok {
@@ -30,20 +30,20 @@ func (h *Hotel) MakeOrder(ctx context.Context, order model.Order) error {
 
 	exist, err := h.order.ExistByTime(ctx, order.From, order.To)
 	if err != nil {
-		return err
+		return toUsescaseError(err)
 	}
 
 	if !exist {
 		return fmt.Errorf("failed to make order from %s to %s: %w", order.From, order.To, usecase_error.OrderForThatTimeAlreadyExist)
 	}
 
-	return h.order.Make(ctx, rep_model.Order(order))
+	return h.order.Create(ctx, rep_model.Order(order))
 }
 
 func (h *Hotel) GetOrdersByEmail(ctx context.Context, userEmail string) ([]model.Order, error) {
 	orders, err := h.order.GetByEmail(ctx, userEmail)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get orders by email %s: %w", userEmail, err)
+		return nil, fmt.Errorf("failed to get orders by email %s: %w", userEmail, toUsescaseError(err))
 	}
 
 	res := make([]model.Order, 0, len(orders))
@@ -51,5 +51,5 @@ func (h *Hotel) GetOrdersByEmail(ctx context.Context, userEmail string) ([]model
 		res = append(res, model.Order(order))
 	}
 
-	return res, err
+	return res, nil
 }

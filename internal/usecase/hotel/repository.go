@@ -12,7 +12,7 @@ type Room interface {
 }
 
 type Order interface {
-	Make(ctx context.Context, order model.Order) error
+	Create(ctx context.Context, order model.Order) error
 	GetByEmail(ctx context.Context, userEmail string) ([]model.Order, error)
 	ExistByTime(ctx context.Context, from time.Time, to time.Time) (bool, error)
 }

@@ -1,6 +1,7 @@
 package hotel
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -15,12 +16,12 @@ func (h *Hotel) MakeOrder(w http.ResponseWriter, r *http.Request) {
 
 	fromTime, err := time.Parse(time.RFC3339, from)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		logAndReturnCode(fmt.Sprintf("failed to parse from: %s", from), http.StatusBadRequest, w)
 		return
 	}
 	toTime, err := time.Parse(time.RFC3339, to)
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		logAndReturnCode(fmt.Sprintf("failed to parse to: %s", to), http.StatusBadRequest, w)
 		return
 	}
 
@@ -32,7 +33,7 @@ func (h *Hotel) MakeOrder(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		logAndReturnErr("failed to make order", err, w)
 		return
 	}
 }

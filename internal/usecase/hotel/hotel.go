@@ -30,6 +30,10 @@ func (h Hotel) MakeOrder(ctx context.Context, order *model.Order) error {
 
 	order.Email = addr.Address
 
+	if !order.From.Before(order.To) {
+		return fmt.Errorf("failed to make order from '%s' to '%s': %w", order.From, order.To, usecase_error.InvalidTimePeriod)
+	}
+
 	rooms, err := h.room.GetAvailable(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get available rooms: %w", toUsescaseError(err))
@@ -39,12 +43,12 @@ func (h Hotel) MakeOrder(ctx context.Context, order *model.Order) error {
 		return fmt.Errorf("failed to make order by room '%s': %w", order.Room, usecase_error.DontHaveAvailableRooms)
 	}
 
-	exist, err := h.order.ExistByTime(ctx, order.From, order.To)
+	exist, err := h.order.ExistByTime(ctx, order.Email, order.From, order.To)
 	if err != nil {
 		return toUsescaseError(err)
 	}
 
-	if !exist {
+	if exist {
 		return fmt.Errorf("failed to make order from '%s' to '%s': %w", order.From, order.To, usecase_error.OrderForThatTimeAlreadyExist)
 	}
 

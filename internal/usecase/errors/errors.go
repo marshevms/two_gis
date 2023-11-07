@@ -8,6 +8,7 @@ const (
 	DontHaveAvailableRooms       Code = 1
 	OrderForThatTimeAlreadyExist Code = 2
 	InvalidEmail                 Code = 3
+	InvalidTimePeriod            Code = 4
 )
 
 func (c Code) Error() string {
@@ -18,6 +19,8 @@ func (c Code) Error() string {
 		return "order for that time already exist"
 	case InvalidEmail:
 		return "invalid email"
+	case InvalidTimePeriod:
+		return "invalid time period"
 	default:
 		return "unknown"
 	}

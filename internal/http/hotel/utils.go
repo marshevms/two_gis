@@ -46,7 +46,8 @@ func toHTTPCode(err error) int {
 func usecaseCodeToHTTPCode(code usecase_err.Code) int {
 	switch code {
 	case usecase_err.DontHaveAvailableRooms,
-		usecase_err.InvalidEmail:
+		usecase_err.InvalidEmail,
+		usecase_err.InvalidTimePeriod:
 		return http.StatusBadRequest
 	case usecase_err.OrderForThatTimeAlreadyExist:
 		return http.StatusConflict

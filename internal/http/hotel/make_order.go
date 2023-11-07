@@ -16,12 +16,12 @@ func (h Hotel) MakeOrder(w http.ResponseWriter, r *http.Request) {
 
 	fromTime, err := time.Parse(time.RFC3339, from)
 	if err != nil {
-		logAndReturnCode(fmt.Sprintf("failed to parse from: %s", from), http.StatusBadRequest, w)
+		logAndReturnCode(fmt.Sprintf("failed to parse from: '%s'", from), http.StatusBadRequest, w)
 		return
 	}
 	toTime, err := time.Parse(time.RFC3339, to)
 	if err != nil {
-		logAndReturnCode(fmt.Sprintf("failed to parse to: %s", to), http.StatusBadRequest, w)
+		logAndReturnCode(fmt.Sprintf("failed to parse to: '%s'", to), http.StatusBadRequest, w)
 		return
 	}
 

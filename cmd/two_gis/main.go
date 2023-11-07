@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/marshevms/two_gis/internal/closer"
-	"github.com/marshevms/two_gis/internal/http/hotel"
+	http_hotel "github.com/marshevms/two_gis/internal/http/hotel"
 	"github.com/marshevms/two_gis/internal/http/middleware"
 	"github.com/marshevms/two_gis/internal/http/server"
 	"github.com/marshevms/two_gis/internal/logger"
@@ -131,7 +131,7 @@ func main() {
 
 	usecaseHotel := usecase_hotel.New(repRoom, repOrder)
 
-	httpHotel := hotel.New(usecaseHotel)
+	httpHotel := http_hotel.New(usecaseHotel)
 
 	s := server.New("localhost", 8080)
 	s.AddMiddleware(

@@ -139,8 +139,8 @@ func main() {
 		middleware.Logger(),
 	)
 
-	s.HandleFunc("/make-order", httpHotel.MakeOrder)
-	s.HandleFunc("/orders-by-email", httpHotel.GetOrdersByEmail)
+	s.Handle("/make-order", middleware.Post()(http.HandlerFunc(httpHotel.MakeOrder)))
+	s.Handle("/orders-by-email", middleware.Get()(http.HandlerFunc(httpHotel.GetOrdersByEmail)))
 
 	closer.Add(func() {
 		err := s.Stop(context.Background())

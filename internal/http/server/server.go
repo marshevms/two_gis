@@ -39,6 +39,11 @@ func (s Server) HandleFunc(pattern string, handler func(http.ResponseWriter, *ht
 	s.mux.Handle(pattern, chain(http.HandlerFunc(handler), mddlwrs...))
 }
 
+func (s Server) Handle(pattern string, handler http.Handler) {
+	routeExist = true
+	s.mux.Handle(pattern, chain(handler, mddlwrs...))
+}
+
 // SetMiddleware устанавливает миддлвари, должно быть вызвано до установки роута
 func (s Server) AddMiddleware(middlewares ...func(next http.Handler) http.Handler) {
 	if routeExist {

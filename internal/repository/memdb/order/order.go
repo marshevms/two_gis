@@ -3,6 +3,7 @@ package order
 import (
 	"context"
 	"sync/atomic"
+	"time"
 
 	"github.com/marshevms/two_gis/internal/repository/model"
 )
@@ -32,4 +33,8 @@ func (o Order) GetByEmail(ctx context.Context, email string) ([]model.Order, err
 	}
 
 	return res, nil
+}
+
+func (o Order) ExistByTime(ctx context.Context, from, to time.Time) (bool, error) {
+	return true, nil
 }

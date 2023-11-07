@@ -8,7 +8,7 @@ import (
 	usecase_model "github.com/marshevms/two_gis/internal/usecase/model"
 )
 
-func (h *Hotel) MakeOrder(w http.ResponseWriter, r *http.Request) {
+func (h Hotel) MakeOrder(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query().Get("email")
 	room := r.URL.Query().Get("room")
 	from := r.URL.Query().Get("from")
@@ -25,13 +25,14 @@ func (h *Hotel) MakeOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.usecase.MakeOrder(r.Context(), usecase_model.Order{
+	order := &usecase_model.Order{
 		Email: email,
 		Room:  room,
 		From:  fromTime,
 		To:    toTime,
-	})
+	}
 
+	err = h.usecase.MakeOrder(r.Context(), order)
 	if err != nil {
 		logAndReturnErr("failed to make order", err, w)
 		return

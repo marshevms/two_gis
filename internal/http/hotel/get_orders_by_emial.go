@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (h *Hotel) GetOrdersByEmail(w http.ResponseWriter, r *http.Request) {
+func (h Hotel) GetOrdersByEmail(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query().Get("email")
 
 	orders, err := h.usecase.GetOrdersByEmail(r.Context(), email)
@@ -19,6 +19,4 @@ func (h *Hotel) GetOrdersByEmail(w http.ResponseWriter, r *http.Request) {
 		logAndReturnErr("failed to endcode to json", err, w)
 		return
 	}
-
-	return
 }

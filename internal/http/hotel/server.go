@@ -8,7 +8,7 @@ import (
 
 type Usecase interface {
 	GetOrdersByEmail(ctx context.Context, userEmail string) ([]usecase_model.Order, error)
-	MakeOrder(ctx context.Context, order usecase_model.Order) error
+	MakeOrder(ctx context.Context, order *usecase_model.Order) error
 }
 
 type Hotel struct {

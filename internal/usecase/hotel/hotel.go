@@ -14,11 +14,14 @@ type Hotel struct {
 	order Order
 }
 
-func New() *Hotel {
-	return &Hotel{}
+func New(room Room, order Order) *Hotel {
+	return &Hotel{
+		room:  room,
+		order: order,
+	}
 }
 
-func (h *Hotel) MakeOrder(ctx context.Context, order model.Order) error {
+func (h Hotel) MakeOrder(ctx context.Context, order *model.Order) error {
 	rooms, err := h.room.GetAvailable(ctx)
 	if err != nil {
 		return toUsescaseError(err)
@@ -37,10 +40,10 @@ func (h *Hotel) MakeOrder(ctx context.Context, order model.Order) error {
 		return fmt.Errorf("failed to make order from %s to %s: %w", order.From, order.To, usecase_error.OrderForThatTimeAlreadyExist)
 	}
 
-	return h.order.Create(ctx, rep_model.Order(order))
+	return h.order.Create(ctx, (*rep_model.Order)(order))
 }
 
-func (h *Hotel) GetOrdersByEmail(ctx context.Context, userEmail string) ([]model.Order, error) {
+func (h Hotel) GetOrdersByEmail(ctx context.Context, userEmail string) ([]model.Order, error) {
 	orders, err := h.order.GetByEmail(ctx, userEmail)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get orders by email %s: %w", userEmail, toUsescaseError(err))

@@ -2,6 +2,7 @@ package hotel
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	app_err "github.com/marshevms/two_gis/internal/errors"
@@ -15,13 +16,12 @@ func logAndReturnErr(cause string, err error, w http.ResponseWriter) {
 		return
 	}
 
-	http.Error(w, http.StatusText(code), code)
-	logger.Errorf("%s: %s", cause, err)
+	logAndReturnCode(fmt.Sprintf("%s: %s", cause, err), code, w)
 }
 
 func logAndReturnCode(cause string, code int, w http.ResponseWriter) {
 	http.Error(w, http.StatusText(code), code)
-	logger.Errorf("%s: %d", cause, code)
+	logger.Errorf("%s: %s", cause, http.StatusText(code))
 }
 
 func toHTTPCode(err error) int {
